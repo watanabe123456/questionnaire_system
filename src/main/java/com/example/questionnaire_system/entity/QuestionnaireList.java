@@ -11,9 +11,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.example.questionnaire_system.vo.QuestionnaireReq;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "questionnaire_list")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionnaireList {
 
 	@Id

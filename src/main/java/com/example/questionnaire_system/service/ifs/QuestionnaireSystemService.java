@@ -3,7 +3,6 @@ package com.example.questionnaire_system.service.ifs;
 import java.util.List;
 
 import com.example.questionnaire_system.entity.QuestionnaireList;
-import com.example.questionnaire_system.entity.UserInfo;
 import com.example.questionnaire_system.vo.QuestionnaireReq;
 import com.example.questionnaire_system.vo.QuestionnaireRes;
 import com.example.questionnaire_system.vo.UserInfoReq;
@@ -31,6 +30,9 @@ public interface QuestionnaireSystemService {
 
 	// 顯示全部問卷(用創建時間倒序)
 	public List<QuestionnaireList> showAllQuestionnaire();
+	
+	//顯示問卷內容
+	public QuestionnaireRes showQuestionnaireInfo(QuestionnaireReq req);
 
 	// 新增用戶資料與用戶回答
 	public UserInfoRes creatUserInfoAndAnswer(UserInfoReq req);

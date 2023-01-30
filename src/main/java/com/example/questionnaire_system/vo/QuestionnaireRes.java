@@ -1,5 +1,8 @@
 package com.example.questionnaire_system.vo;
 
+import java.time.LocalDate;
+import java.util.List;
+
 import com.example.questionnaire_system.entity.QuestionnaireInfo;
 import com.example.questionnaire_system.entity.QuestionnaireList;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -7,9 +10,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionnaireRes {
 
-	private QuestionnaireInfo questionnaireInfo;
+	private String questionnaireTitle;
+
+	private String questionnaireDescribe;
+
+	private LocalDate startTime;
+
+	private LocalDate endTime;
 
 	private QuestionnaireList questionnaireList;
+
+	private QuestionnaireInfo questionnaireInfo;
+
+	private List<QuestionnaireInfo> questionAndAnswer;
 
 	private String message;
 
@@ -31,10 +44,62 @@ public class QuestionnaireRes {
 		this.message = message;
 	}
 
-	public QuestionnaireRes(QuestionnaireInfo questionnaireInfo, QuestionnaireList questionnaireList, String message) {
-		this.questionnaireInfo = questionnaireInfo;
-		this.questionnaireList = questionnaireList;
+	public QuestionnaireRes(List<QuestionnaireInfo> questionAndAnswer, String message) {
+		this.questionAndAnswer = questionAndAnswer;
 		this.message = message;
+	}
+
+	public QuestionnaireRes(String questionnaireTitle, String questionnaireDescribe, LocalDate startTime,
+			LocalDate endTime, QuestionnaireList questionnaireList, QuestionnaireInfo questionnaireInfo,
+			List<QuestionnaireInfo> questionAndAnswer, String message) {
+		this.questionnaireTitle = questionnaireTitle;
+		this.questionnaireDescribe = questionnaireDescribe;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.questionnaireList = questionnaireList;
+		this.questionnaireInfo = questionnaireInfo;
+		this.questionAndAnswer = questionAndAnswer;
+		this.message = message;
+	}
+
+	public String getQuestionnaireTitle() {
+		return questionnaireTitle;
+	}
+
+	public void setQuestionnaireTitle(String questionnaireTitle) {
+		this.questionnaireTitle = questionnaireTitle;
+	}
+
+	public String getQuestionnaireDescribe() {
+		return questionnaireDescribe;
+	}
+
+	public void setQuestionnaireDescribe(String questionnaireDescribe) {
+		this.questionnaireDescribe = questionnaireDescribe;
+	}
+
+	public LocalDate getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(LocalDate startTime) {
+		this.startTime = startTime;
+	}
+
+	public LocalDate getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(LocalDate endTime) {
+		this.endTime = endTime;
+	}
+
+	public QuestionnaireList getQuestionnaireList() {
+		return questionnaireList;
+	}
+
+	public void setQuestionnaireList(QuestionnaireList questionnaireList) {
+		this.questionnaireList = questionnaireList;
 	}
 
 	public QuestionnaireInfo getQuestionnaireInfo() {
@@ -45,12 +110,12 @@ public class QuestionnaireRes {
 		this.questionnaireInfo = questionnaireInfo;
 	}
 
-	public QuestionnaireList getQuestionnaireList() {
-		return questionnaireList;
+	public List<QuestionnaireInfo> getQuestionAndAnswer() {
+		return questionAndAnswer;
 	}
 
-	public void setQuestionnaireList(QuestionnaireList questionnaireList) {
-		this.questionnaireList = questionnaireList;
+	public void setQuestionAndAnswer(List<QuestionnaireInfo> questionAndAnswer) {
+		this.questionAndAnswer = questionAndAnswer;
 	}
 
 	public String getMessage() {

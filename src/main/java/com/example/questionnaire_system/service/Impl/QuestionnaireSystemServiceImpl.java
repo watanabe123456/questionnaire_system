@@ -1,10 +1,7 @@
 package com.example.questionnaire_system.service.Impl;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +20,10 @@ import com.example.questionnaire_system.vo.QuestionnaireReq;
 import com.example.questionnaire_system.vo.QuestionnaireRes;
 import com.example.questionnaire_system.vo.UserInfoReq;
 import com.example.questionnaire_system.vo.UserInfoRes;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Service
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionnaireSystemServiceImpl implements QuestionnaireSystemService {
 
 	@Autowired
@@ -213,6 +212,33 @@ public class QuestionnaireSystemServiceImpl implements QuestionnaireSystemServic
 	}
 
 	@Override
+	public QuestionnaireRes showQuestionnaireInfo(QuestionnaireReq req) {
+
+		Optional<QuestionnaireList> resultOp = questionnaireListDAO.findById(req.getQuestionnaireNumber());
+		if (!resultOp.isPresent()) {
+			return new QuestionnaireRes(QuestionnaireSystemMsgCode.QUESTIONNAIRE_DOSENT_EXIST.getMessage());
+		}
+
+		QuestionnaireList questionnaireList = resultOp.get();
+		List<QuestionnaireInfo> questionAndAnswer = questionnaireInfoDAO
+				.findByQuestionnaireNumber(resultOp.get().getQuestionnaireNumber());
+		for (QuestionnaireInfo item : questionAndAnswer) {
+			item.setId(null);
+			item.setQuestionnaireNumber(null);
+		}
+
+		QuestionnaireRes res = new QuestionnaireRes();
+//		res.setQuestionnaireList(questionnaireList);
+		res.setQuestionnaireTitle(questionnaireList.getQuestionnaireTitle());
+		res.setQuestionnaireDescribe(questionnaireList.getQuestionnaireDescribe());
+		res.setStartTime(questionnaireList.getStartTime());
+		res.setEndTime(questionnaireList.getEndTime());
+		res.setQuestionAndAnswer(questionAndAnswer);
+
+		return res;
+	}
+
+	@Override
 	public UserInfoRes creatUserInfoAndAnswer(UserInfoReq req) {
 
 		UserInfoRes checkResult = checkParam(req);
@@ -252,70 +278,8 @@ public class QuestionnaireSystemServiceImpl implements QuestionnaireSystemServic
 
 	@Override
 	public UserInfoRes statistics(UserInfoReq req) {
-		
-		if(req.getQuestionnaireNumber() <= 0 || req.getQuestionnaireNumber() == null) {
-			return new UserInfoRes(QuestionnaireSystemMsgCode.QUESTIONNAIRE_NUMBER_REQUIRED.getMessage());
-		}
 
-		UserInfoRes res = new UserInfoRes();
-		Optional<QuestionnaireList> questionnaire = questionnaireListDAO.findByQuestionnaireNumber(req.getQuestionnaireNumber());
-		if (questionnaire == null) {
-			return new UserInfoRes(QuestionnaireSystemMsgCode.QUESTIONNAIRE_DOSENT_EXIST.getMessage());
-		}
-
-		Integer questionnaireNumber = questionnaire.get().getQuestionnaireNumber();
-		List<UserInfo> userInfo = userInfoDAO.findAllByQuestionnaireNumber(questionnaireNumber);
-		if (userInfo == null) {
-			return new UserInfoRes(QuestionnaireSystemMsgCode.RESULT_ERROR.getMessage());
-		}
-
-		List<String> userAns = new ArrayList<>();
-		for (UserInfo item : userInfo) {
-			userAns.add(item.getUsersAnswer());
-		}
-
-		Map<String, Map<String, Integer>> statisticsMap = new HashMap<>();
-		for (String item : userAns) {
-			for (String item2 : item.split(",")) {
-				String question = item2.split("=")[0].trim();
-				String answer = item2.split("=")[1].trim();
-				if (answer.contains(";")) {
-					String[] ansArray = answer.split(";");
-
-					for (String answers : ansArray) {
-						mapStatistics(statisticsMap, answers, question);
-					}
-				} else {
-					mapStatistics(statisticsMap, answer, question);
-				}
-			}
-		}
-
-		res.setStatisticsMap(statisticsMap);
-		res.setMessage(QuestionnaireSystemMsgCode.SUCCESSFUL.getMessage());
-		return res;
-	}
-
-	private void mapStatistics(Map<String, Map<String, Integer>> statisticsMap, String answer, String question) {
-		Map<String, Integer> ansStatisticsMap = new HashMap<>();
-
-		if (statisticsMap.containsKey(question)) {
-
-			Map<String, Integer> containMap = statisticsMap.get(question);
-
-			if (containMap.containsKey(answer)) {
-				int count1 = containMap.get(answer);
-				containMap.put(answer, count1 + 1);
-			} else {
-				containMap.put(answer, 1);
-			}
-
-			statisticsMap.put(question, containMap);
-		}	else {
-			ansStatisticsMap.put(answer, 1);
-			statisticsMap.put(question, ansStatisticsMap);
-		}
-
+		return null;
 	}
 
 }

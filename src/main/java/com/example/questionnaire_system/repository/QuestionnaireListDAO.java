@@ -39,4 +39,8 @@ public interface QuestionnaireListDAO extends JpaRepository<QuestionnaireList, I
 
 	public List<QuestionnaireList> findAllByOrderByCreateTimeDesc();
 
+	public QuestionnaireList findByQuestionnaireTitle(String questionnaireTitle);
+
+	public QuestionnaireList findQuestionnaireNumberByQuestionnaireTitle(String questionnaireTitle);
+
 }

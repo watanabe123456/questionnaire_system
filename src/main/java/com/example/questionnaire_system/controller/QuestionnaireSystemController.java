@@ -14,9 +14,11 @@ import com.example.questionnaire_system.vo.QuestionnaireReq;
 import com.example.questionnaire_system.vo.QuestionnaireRes;
 import com.example.questionnaire_system.vo.UserInfoReq;
 import com.example.questionnaire_system.vo.UserInfoRes;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @CrossOrigin
 @RestController
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionnaireSystemController {
 
 	@Autowired
@@ -55,6 +57,11 @@ public class QuestionnaireSystemController {
 	@PostMapping(value = "/api/show_all_questionnaire")
 	public List<QuestionnaireList> showAllQuestionnaire() {
 		return questionnaireSystemService.showAllQuestionnaire();
+	}
+	
+	@PostMapping(value = "/api/show_questionnaire_info")
+	public QuestionnaireRes showQuestionnaireInfo(@RequestBody QuestionnaireReq req) {
+		return questionnaireSystemService.showQuestionnaireInfo(req);
 	}
 
 	@PostMapping(value = "/api/creat_user_info_and_answer")

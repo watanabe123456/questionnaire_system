@@ -8,9 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.example.questionnaire_system.vo.QuestionnaireReq;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 @Entity
 @Table(name = "questionnaire_info")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class QuestionnaireInfo {
 
 	@Id
