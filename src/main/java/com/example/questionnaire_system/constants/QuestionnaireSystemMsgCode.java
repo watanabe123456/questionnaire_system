@@ -12,7 +12,8 @@ public enum QuestionnaireSystemMsgCode {
 	START_TIME_ERROR("403", "Start time error"), 
 	END_TIME_ERROR("403", "End time error"),
 	PARAMETER_ERROR("403", "parameter error"), 
-	QUESTIONNAIRE_DOSENT_EXIST("403", "Questionnaire doesn't exist!!");
+	QUESTIONNAIRE_DOSENT_EXIST("403", "Questionnaire doesn't exist!!"),
+	RESULT_ERROR("403", "Result error"),;
 
 	private String code;
 

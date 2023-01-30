@@ -4,6 +4,8 @@ public class UserInfoReq {
 
 	private Integer questionnaireNumber;
 
+	private String questionnaireTitle;
+
 	private String userName;
 
 	private String userPhone;
@@ -20,9 +22,10 @@ public class UserInfoReq {
 
 	}
 
-	public UserInfoReq(Integer questionnaireNumber, String userName, String userPhone, String userEmail,
-			Integer userAge, String usersAnswer, String gender) {
+	public UserInfoReq(Integer questionnaireNumber, String questionnaireTitle, String userName, String userPhone,
+			String userEmail, Integer userAge, String usersAnswer, String gender) {
 		this.questionnaireNumber = questionnaireNumber;
+		this.questionnaireTitle = questionnaireTitle;
 		this.userName = userName;
 		this.userPhone = userPhone;
 		this.userEmail = userEmail;
@@ -37,6 +40,14 @@ public class UserInfoReq {
 
 	public void setQuestionnaireNumber(Integer questionnaireNumber) {
 		this.questionnaireNumber = questionnaireNumber;
+	}
+
+	public String getQuestionnaireTitle() {
+		return questionnaireTitle;
+	}
+
+	public void setQuestionnaireTitle(String questionnaireTitle) {
+		this.questionnaireTitle = questionnaireTitle;
 	}
 
 	public String getUserName() {

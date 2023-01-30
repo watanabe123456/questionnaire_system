@@ -66,5 +66,9 @@ public class QuestionnaireSystemController {
 	public UserInfoRes showUsersAns(@RequestBody UserInfoReq req) {
 		return questionnaireSystemService.showUsersAns(req);
 	}
-}
 
+	@PostMapping(value = "/api/statistics")
+	public UserInfoRes statistics(@RequestBody UserInfoReq req) {
+		return questionnaireSystemService.statistics(req);
+	}
+}

@@ -37,4 +37,7 @@ public interface QuestionnaireSystemService {
 
 	// 顯示用戶回答
 	public UserInfoRes showUsersAns(UserInfoReq req);
+
+	// 統計
+	public UserInfoRes statistics(UserInfoReq req);
 }

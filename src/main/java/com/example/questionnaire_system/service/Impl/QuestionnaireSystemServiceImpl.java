@@ -1,7 +1,10 @@
 package com.example.questionnaire_system.service.Impl;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -245,6 +248,74 @@ public class QuestionnaireSystemServiceImpl implements QuestionnaireSystemServic
 		List<UserInfo> userAns = userInfoDAO.findAllByQuestionnaireNumber(req.getQuestionnaireNumber());
 
 		return new UserInfoRes(userAns, QuestionnaireSystemMsgCode.SUCCESSFUL.getMessage());
+	}
+
+	@Override
+	public UserInfoRes statistics(UserInfoReq req) {
+		
+		if(req.getQuestionnaireNumber() <= 0 || req.getQuestionnaireNumber() == null) {
+			return new UserInfoRes(QuestionnaireSystemMsgCode.QUESTIONNAIRE_NUMBER_REQUIRED.getMessage());
+		}
+
+		UserInfoRes res = new UserInfoRes();
+		Optional<QuestionnaireList> questionnaire = questionnaireListDAO.findByQuestionnaireNumber(req.getQuestionnaireNumber());
+		if (questionnaire == null) {
+			return new UserInfoRes(QuestionnaireSystemMsgCode.QUESTIONNAIRE_DOSENT_EXIST.getMessage());
+		}
+
+		Integer questionnaireNumber = questionnaire.get().getQuestionnaireNumber();
+		List<UserInfo> userInfo = userInfoDAO.findAllByQuestionnaireNumber(questionnaireNumber);
+		if (userInfo == null) {
+			return new UserInfoRes(QuestionnaireSystemMsgCode.RESULT_ERROR.getMessage());
+		}
+
+		List<String> userAns = new ArrayList<>();
+		for (UserInfo item : userInfo) {
+			userAns.add(item.getUsersAnswer());
+		}
+
+		Map<String, Map<String, Integer>> statisticsMap = new HashMap<>();
+		for (String item : userAns) {
+			for (String item2 : item.split(",")) {
+				String question = item2.split("=")[0].trim();
+				String answer = item2.split("=")[1].trim();
+				if (answer.contains(";")) {
+					String[] ansArray = answer.split(";");
+
+					for (String answers : ansArray) {
+						mapStatistics(statisticsMap, answers, question);
+					}
+				} else {
+					mapStatistics(statisticsMap, answer, question);
+				}
+			}
+		}
+
+		res.setStatisticsMap(statisticsMap);
+		res.setMessage(QuestionnaireSystemMsgCode.SUCCESSFUL.getMessage());
+		return res;
+	}
+
+	private void mapStatistics(Map<String, Map<String, Integer>> statisticsMap, String answer, String question) {
+		Map<String, Integer> ansStatisticsMap = new HashMap<>();
+
+		if (statisticsMap.containsKey(question)) {
+
+			Map<String, Integer> containMap = statisticsMap.get(question);
+
+			if (containMap.containsKey(answer)) {
+				int count1 = containMap.get(answer);
+				containMap.put(answer, count1 + 1);
+			} else {
+				containMap.put(answer, 1);
+			}
+
+			statisticsMap.put(question, containMap);
+		}	else {
+			ansStatisticsMap.put(answer, 1);
+			statisticsMap.put(question, ansStatisticsMap);
+		}
+
 	}
 
 }

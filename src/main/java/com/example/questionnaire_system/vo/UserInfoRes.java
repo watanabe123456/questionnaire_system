@@ -1,6 +1,7 @@
 package com.example.questionnaire_system.vo;
 
 import java.util.List;
+import java.util.Map;
 
 import com.example.questionnaire_system.entity.UserInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,6 +12,8 @@ public class UserInfoRes {
 	private UserInfo userInfo;
 
 	private List<UserInfo> userAns;
+
+	Map<String, Map<String, Integer>> statisticsMap;
 
 	private String message;
 
@@ -29,6 +32,11 @@ public class UserInfoRes {
 
 	public UserInfoRes(UserInfo userInfo, String message) {
 		this.userInfo = userInfo;
+		this.message = message;
+	}
+
+	public UserInfoRes(Map<String, Map<String, Integer>> statisticsMap, String message) {
+		this.statisticsMap = statisticsMap;
 		this.message = message;
 	}
 
@@ -54,6 +62,14 @@ public class UserInfoRes {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Map<String, Map<String, Integer>> getStatisticsMap() {
+		return statisticsMap;
+	}
+
+	public void setStatisticsMap(Map<String, Map<String, Integer>> statisticsMap) {
+		this.statisticsMap = statisticsMap;
 	}
 
 }
